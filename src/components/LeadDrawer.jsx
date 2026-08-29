@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useAuth } from '../contexts/AuthContext'
 import { useLeadNotes } from '../hooks/useLeads'
 import { OWNERS, SOURCES, formatDateTime, ownerForEmail } from '../lib/constants'
+import StageSelect from './StageSelect'
 
 const emptyLead = {
   name: '',
@@ -80,32 +81,14 @@ export default function LeadDrawer({ lead, stages, onClose, onSave, onDelete }) 
         </div>
 
         <form onSubmit={handleSubmit} className="drawer-form">
-          <label>
-            Név
-            <input value={form.name} onChange={handleChange('name')} required />
-          </label>
-          <label>
-            Cégnév
-            <input value={form.company ?? ''} onChange={handleChange('company')} />
-          </label>
           <div className="form-row">
             <label>
-              Email
-              <input type="email" value={form.email ?? ''} onChange={handleChange('email')} />
-            </label>
-            <label>
-              Telefonszám
-              <input value={form.phone ?? ''} onChange={handleChange('phone')} />
-            </label>
-          </div>
-          <div className="form-row">
-            <label>
-              Forrás
-              <select value={form.source} onChange={handleChange('source')}>
-                {SOURCES.map((s) => (
-                  <option key={s} value={s}>{s}</option>
-                ))}
-              </select>
+              Állapot
+              <StageSelect
+                stages={stages}
+                value={form.stage_id}
+                onChange={(id) => setForm((f) => ({ ...f, stage_id: id }))}
+              />
             </label>
             <label>
               Felelős
@@ -117,20 +100,47 @@ export default function LeadDrawer({ lead, stages, onClose, onSave, onDelete }) 
               </select>
             </label>
           </div>
-          <label>
-            Állapot
-            <select value={form.stage_id} onChange={handleChange('stage_id')}>
-              {stages.map((s) => (
-                <option key={s.id} value={s.id}>{s.name}</option>
-              ))}
-            </select>
-          </label>
+
           {currentStage?.is_lost && (
             <label>
               Elutasítás oka
               <input value={form.lost_reason ?? ''} onChange={handleChange('lost_reason')} />
             </label>
           )}
+
+          <div className="form-section-grid">
+            <fieldset className="form-section">
+              <legend>Fő kapcsolattartó</legend>
+              <label>
+                Név
+                <input value={form.name} onChange={handleChange('name')} required />
+              </label>
+              <label>
+                Email
+                <input type="email" value={form.email ?? ''} onChange={handleChange('email')} />
+              </label>
+              <label>
+                Telefonszám
+                <input value={form.phone ?? ''} onChange={handleChange('phone')} />
+              </label>
+            </fieldset>
+            <fieldset className="form-section">
+              <legend>Cég</legend>
+              <label>
+                Cégnév
+                <input value={form.company ?? ''} onChange={handleChange('company')} />
+              </label>
+              <label>
+                Forrás
+                <select value={form.source} onChange={handleChange('source')}>
+                  {SOURCES.map((s) => (
+                    <option key={s} value={s}>{s}</option>
+                  ))}
+                </select>
+              </label>
+            </fieldset>
+          </div>
+
           <div className="form-row">
             <label>
               Becsült érték (Ft)
