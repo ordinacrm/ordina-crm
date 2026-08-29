@@ -21,7 +21,8 @@ export default function Dashboard() {
     const q = search.trim().toLowerCase()
     return leads.filter((l) => {
       if (q && !l.name.toLowerCase().includes(q) && !(l.company ?? '').toLowerCase().includes(q)) return false
-      if (ownerFilter !== 'Mind' && l.owner !== ownerFilter) return false
+      if (ownerFilter === 'Nincs hozzárendelve' && l.owner) return false
+      if (ownerFilter !== 'Mind' && ownerFilter !== 'Nincs hozzárendelve' && l.owner !== ownerFilter) return false
       if (sourceFilter !== 'Mind' && l.source !== sourceFilter) return false
       if (onlyOverdue && !isOverdue(l.next_action_due)) return false
       return true
@@ -76,6 +77,7 @@ export default function Dashboard() {
         <select value={ownerFilter} onChange={(e) => setOwnerFilter(e.target.value)}>
           <option>Mind</option>
           {OWNERS.map((o) => <option key={o}>{o}</option>)}
+          <option>Nincs hozzárendelve</option>
         </select>
         <select value={sourceFilter} onChange={(e) => setSourceFilter(e.target.value)}>
           <option>Mind</option>

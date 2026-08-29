@@ -49,6 +49,7 @@ export default function LeadDrawer({ lead, stages, onClose, onSave, onDelete }) 
         phone: form.phone || null,
         next_action: form.next_action || null,
         lost_reason: form.lost_reason || null,
+        owner: form.owner || null,
       }
       delete payload.id
       delete payload.created_at
@@ -103,7 +104,8 @@ export default function LeadDrawer({ lead, stages, onClose, onSave, onDelete }) 
             </label>
             <label>
               Felelős
-              <select value={form.owner} onChange={handleChange('owner')}>
+              <select value={form.owner ?? ''} onChange={handleChange('owner')}>
+                <option value="">Nincs hozzárendelve</option>
                 {OWNERS.map((o) => (
                   <option key={o} value={o}>{o}</option>
                 ))}

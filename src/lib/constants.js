@@ -11,6 +11,10 @@ export function ownerForEmail(email) {
   return OWNER_BY_EMAIL[email?.toLowerCase()] ?? OWNERS[0]
 }
 
+export function ownerLabel(owner) {
+  return owner || 'Nincs hozzárendelve'
+}
+
 export function isOverdue(dueDate) {
   if (!dueDate) return false
   const today = new Date()

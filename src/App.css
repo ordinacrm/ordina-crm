@@ -280,6 +280,17 @@
   border-radius: 999px;
 }
 
+.badge-unassigned {
+  background: var(--bg);
+  color: var(--text-muted);
+  border: 1px dashed var(--border);
+}
+
+.unassigned-text {
+  color: var(--text-muted);
+  font-style: italic;
+}
+
 .due {
   font-size: 11px;
   color: var(--text-muted);

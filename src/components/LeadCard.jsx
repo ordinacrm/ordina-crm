@@ -1,5 +1,5 @@
 import { useDraggable } from '@dnd-kit/core'
-import { formatDate, isOverdue } from '../lib/constants'
+import { formatDate, isOverdue, ownerLabel } from '../lib/constants'
 
 export default function LeadCard({ lead, onClick }) {
   const { attributes, listeners, setNodeRef, transform, isDragging } = useDraggable({
@@ -28,7 +28,7 @@ export default function LeadCard({ lead, onClick }) {
       <div className="lead-card-title">{lead.name}</div>
       {lead.company && <div className="lead-card-company">{lead.company}</div>}
       <div className="lead-card-meta">
-        <span className="badge">{lead.owner}</span>
+        <span className={lead.owner ? 'badge' : 'badge badge-unassigned'}>{ownerLabel(lead.owner)}</span>
         {lead.next_action_due && (
           <span className={overdue ? 'due overdue' : 'due'}>
             {formatDate(lead.next_action_due)}

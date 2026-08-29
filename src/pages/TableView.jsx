@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react'
-import { formatDate, isOverdue } from '../lib/constants'
+import { formatDate, isOverdue, ownerLabel } from '../lib/constants'
 
 const COLUMNS = [
   { key: 'name', label: 'Név' },
@@ -68,7 +68,7 @@ export default function TableView({ stages, leads, onRowClick }) {
                 <td>{lead.email}</td>
                 <td>{lead.phone}</td>
                 <td>{lead.source}</td>
-                <td>{lead.owner}</td>
+                <td className={lead.owner ? '' : 'unassigned-text'}>{ownerLabel(lead.owner)}</td>
                 <td>{stageName(lead.stage_id)}</td>
                 <td>{lead.estimated_value != null ? `${lead.estimated_value.toLocaleString('hu-HU')} Ft` : ''}</td>
                 <td>{formatDate(lead.last_contact_date)}</td>
