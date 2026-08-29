@@ -5,11 +5,23 @@ import { OWNERS, SOURCES, isOverdue } from '../lib/constants'
 import LeadDrawer from '../components/LeadDrawer'
 import Board from './Board'
 import TableView from './TableView'
+import Today from './Today'
 
 export default function Dashboard() {
-  const { stages, leads, loading, error, createLead, updateLead, deleteLead, moveLeadToStage } = useLeads()
+  const {
+    stages,
+    leads,
+    loading,
+    error,
+    createLead,
+    updateLead,
+    deleteLead,
+    moveLeadToStage,
+    completeTask,
+    postponeTask,
+  } = useLeads()
   const { signOut } = useAuth()
-  const [view, setView] = useState('kanban')
+  const [view, setView] = useState('today')
   const [search, setSearch] = useState('')
   const [ownerFilter, setOwnerFilter] = useState('Mind')
   const [sourceFilter, setSourceFilter] = useState('Mind')
@@ -57,6 +69,7 @@ export default function Dashboard() {
         <div className="topbar-left">
           <h1>Ordina CRM</h1>
           <div className="view-toggle">
+            <button className={view === 'today' ? 'active' : ''} onClick={() => setView('today')}>Mai napom</button>
             <button className={view === 'kanban' ? 'active' : ''} onClick={() => setView('kanban')}>Kanban</button>
             <button className={view === 'table' ? 'active' : ''} onClick={() => setView('table')}>Táblázat</button>
           </div>
@@ -67,32 +80,42 @@ export default function Dashboard() {
         </div>
       </header>
 
-      <div className="filterbar">
-        <input
-          className="search-input"
-          placeholder="Keresés név / cégnév alapján..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
-        <select value={ownerFilter} onChange={(e) => setOwnerFilter(e.target.value)}>
-          <option>Mind</option>
-          {OWNERS.map((o) => <option key={o}>{o}</option>)}
-          <option>Nincs hozzárendelve</option>
-        </select>
-        <select value={sourceFilter} onChange={(e) => setSourceFilter(e.target.value)}>
-          <option>Mind</option>
-          {SOURCES.map((s) => <option key={s}>{s}</option>)}
-        </select>
-        <label className="checkbox-label">
-          <input type="checkbox" checked={onlyOverdue} onChange={(e) => setOnlyOverdue(e.target.checked)} />
-          Csak lejárt határidejűek
-        </label>
-      </div>
+      {view !== 'today' && (
+        <div className="filterbar">
+          <input
+            className="search-input"
+            placeholder="Keresés név / cégnév alapján..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+          <select value={ownerFilter} onChange={(e) => setOwnerFilter(e.target.value)}>
+            <option>Mind</option>
+            {OWNERS.map((o) => <option key={o}>{o}</option>)}
+            <option>Nincs hozzárendelve</option>
+          </select>
+          <select value={sourceFilter} onChange={(e) => setSourceFilter(e.target.value)}>
+            <option>Mind</option>
+            {SOURCES.map((s) => <option key={s}>{s}</option>)}
+          </select>
+          <label className="checkbox-label">
+            <input type="checkbox" checked={onlyOverdue} onChange={(e) => setOnlyOverdue(e.target.checked)} />
+            Csak lejárt határidejűek
+          </label>
+        </div>
+      )}
 
       {error && <div className="error-banner">{error}</div>}
 
       {loading ? (
         <div className="loading-state">Betöltés...</div>
+      ) : view === 'today' ? (
+        <Today
+          leads={leads}
+          stages={stages}
+          onCompleteTask={completeTask}
+          onPostponeTask={postponeTask}
+          onOpenLead={openLead}
+        />
       ) : view === 'kanban' ? (
         <Board stages={stages} leads={filteredLeads} onCardClick={openLead} onMoveLead={moveLeadToStage} />
       ) : (

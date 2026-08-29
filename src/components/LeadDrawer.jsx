@@ -50,6 +50,11 @@ export default function LeadDrawer({ lead, stages, onClose, onSave, onDelete }) 
         next_action: form.next_action || null,
         lost_reason: form.lost_reason || null,
         owner: form.owner || null,
+        // a szerkesztő-panelben megadott teendő mindig újra "nyitott" —
+        // a kész/elnapolás jelölés a Mai napom nézet gombjaival történik
+        next_action_status: 'nyitott',
+        next_action_completed_at: null,
+        next_action_postponed_at: null,
       }
       delete payload.id
       delete payload.created_at

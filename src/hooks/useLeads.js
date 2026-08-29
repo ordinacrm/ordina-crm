@@ -56,7 +56,34 @@ export function useLeads() {
     }
   }
 
-  return { stages, leads, loading, error, reload, createLead, updateLead, deleteLead, moveLeadToStage }
+  const completeTask = async (id) => {
+    await updateLead(id, {
+      next_action_status: 'lezárva',
+      next_action_completed_at: new Date().toISOString(),
+    })
+  }
+
+  const postponeTask = async (id, newDueDate) => {
+    await updateLead(id, {
+      next_action_due: newDueDate,
+      next_action_status: 'nyitott',
+      next_action_postponed_at: new Date().toISOString(),
+    })
+  }
+
+  return {
+    stages,
+    leads,
+    loading,
+    error,
+    reload,
+    createLead,
+    updateLead,
+    deleteLead,
+    moveLeadToStage,
+    completeTask,
+    postponeTask,
+  }
 }
 
 export function useLeadNotes(leadId) {
