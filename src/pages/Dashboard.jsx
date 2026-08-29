@@ -172,7 +172,7 @@ export default function Dashboard() {
 
         <div className="content-header">
           <h1>{VIEW_TITLES[view]}</h1>
-          <button className="btn-primary" onClick={openNew}>+ Új lead</button>
+          <button className="btn-primary btn-pill" onClick={openNew}>+ Új lead</button>
         </div>
 
         {view !== 'today' && (
