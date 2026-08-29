@@ -3,6 +3,7 @@ import { useAuth } from '../contexts/AuthContext'
 import { useLeads } from '../hooks/useLeads'
 import { OWNERS, SOURCES, isOverdue, ownerForEmail } from '../lib/constants'
 import LeadDrawer from '../components/LeadDrawer'
+import ProfileModal from '../components/ProfileModal'
 import Board from './Board'
 import TableView from './TableView'
 import Today from './Today'
@@ -69,6 +70,7 @@ export default function Dashboard() {
   const [selectedLead, setSelectedLead] = useState(null)
   const [drawerOpen, setDrawerOpen] = useState(false)
   const [profileOpen, setProfileOpen] = useState(false)
+  const [profileModalOpen, setProfileModalOpen] = useState(false)
   const profileRef = useRef(null)
 
   const currentUser = ownerForEmail(session?.user?.email)
@@ -152,6 +154,15 @@ export default function Dashboard() {
                 <div className="profile-dropdown">
                   <div className="profile-dropdown-name">{currentUser}</div>
                   <div className="profile-dropdown-email">{session?.user?.email}</div>
+                  <button
+                    className="profile-dropdown-item"
+                    onClick={() => {
+                      setProfileModalOpen(true)
+                      setProfileOpen(false)
+                    }}
+                  >
+                    Profilbeállítások
+                  </button>
                   <button className="profile-dropdown-item" onClick={signOut}>Kijelentkezés</button>
                 </div>
               )}
@@ -208,6 +219,10 @@ export default function Dashboard() {
             onSave={handleSave}
             onDelete={handleDelete}
           />
+        )}
+
+        {profileModalOpen && (
+          <ProfileModal session={session} onClose={() => setProfileModalOpen(false)} />
         )}
       </div>
     </div>

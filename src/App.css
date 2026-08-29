@@ -767,3 +767,40 @@
   color: var(--text-muted);
   font-size: 13px;
 }
+
+/* --- Profile modal --- */
+.profile-basic-info {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.profile-basic-info > div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.profile-field-label {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.profile-field-value {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-h);
+}
+
+.profile-modal .drawer-form h3 {
+  font-size: 14px;
+  margin-top: 4px;
+}
+
+.profile-success {
+  color: #15803d;
+  font-size: 13px;
+  margin: 0;
+}
